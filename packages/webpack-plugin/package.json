@@ -1,0 +1,13 @@
+{
+  "name": "@mfes/webpack-plugin",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "files": ["dist"],
+  "keywords": [],
+  "author": "wopen <nepow@foxmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --progress"
+  }
+}

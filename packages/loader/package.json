@@ -1,0 +1,12 @@
+{
+  "name": "@mfes/loader",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "files": ["dist"],
+  "license": "MIT",
+  "private": false,
+  "author": "wopen <nepow@foxmail.com>",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --progress"
+  }
+}
