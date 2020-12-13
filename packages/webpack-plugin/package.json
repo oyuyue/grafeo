@@ -1,12 +1,18 @@
 {
   "name": "@mfes/webpack-plugin",
   "version": "0.0.1",
-  "description": "",
+  "description": "micro frontend webpack plugin",
   "main": "dist/index.js",
   "files": ["dist"],
-  "keywords": [],
+  "keywords": ["mf", "mfe", "micro frontend"],
   "author": "wopen <nepow@foxmail.com>",
   "license": "MIT",
+  "repository": "git@github.com:woopen/mfes.git",
+  "homepage": "https://github.com/woopen/mfes",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --progress"
   }

@@ -2,10 +2,17 @@
   "name": "@mfes/loader",
   "version": "0.0.1",
   "main": "dist/index.js",
+  "description": "micro frontend system loader",
   "files": ["dist"],
+  "keywords": ["mf", "mfe", "micro frontend"],
   "license": "MIT",
-  "private": false,
   "author": "wopen <nepow@foxmail.com>",
+  "repository": "git@github.com:woopen/mfes.git",
+  "homepage": "https://github.com/woopen/mfes",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --progress"
   }
