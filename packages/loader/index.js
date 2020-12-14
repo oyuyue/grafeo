@@ -19,22 +19,9 @@ systemJSPrototype.processScripts = function () {
   })
 }
 
-systemJSPrototype.import = function (id, field) {
-  var loader = this;
-  this.processScripts();
-  return Promise.resolve().then(function () {
-    var load = getOrCreateLoad(loader, loader.urlMap[id] || id);
-    return load.C || topLevelLoad(loader, load);
-  }).then(m => {
-    if (field === false) return m;
-    m = m.default
-    if (!m) return m;
-    return Promise.resolve(m).then(m => {
-      if (field === true) return m.default
-      return m[field1]
-    })
-  })
-};
+systemJSPrototype.resolve = function(name) {
+  return this.urlMap[name]
+}
 
 var firstRegister = true;
 var lastRegister;
@@ -46,6 +33,26 @@ systemJSPrototype.register = function (deps, declare, registry) {
     firstRegister = false;
     this.import();
   }
+};
+
+systemJSPrototype.import = function (id, field) {
+  var loader = this;
+  this.processScripts();
+  var loadId;
+  return Promise.resolve().then(function () {
+    var load = getOrCreateLoad(loader, loader.resolve(id) || id);
+    loadId = load.id;
+    return load.C || topLevelLoad(loader, load);
+  }).then(m => {
+    if (field === false) return m;
+    m = m.default
+    if (!m) return m;
+    return Promise.resolve(m).then(m => {
+      if (loadId === ENTRY && typeof m === 'function') return m()
+      if (typeof field === 'string') return m[field]
+      return m.default
+    })
+  })
 };
 
 systemJSPrototype.set = function(name, loc) {
@@ -120,7 +127,7 @@ function getOrCreateLoad(loader, id = ENTRY) {
   .then(function (instantiation) {
     return Promise.all(instantiation[0].map(function (dep, i) {
       var setter = instantiation[1][i];
-      return Promise.resolve(loader.urlMap[dep] || dep)
+      return Promise.resolve(loader.resolve(dep) || dep)
       .then(function (depId) {
         var depLoad = getOrCreateLoad(loader, depId);
         // depLoad.I may be undefined for already-evaluated

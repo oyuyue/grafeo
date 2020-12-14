@@ -1,4 +1,4 @@
-const MfesPlugin = require('../../../packages/webpack-plugin/dist')
+const MfesPlugin = require('../../../packages/webpack-plugin/index.js')
 
 module.exports = {
   devServer: MfesPlugin.devServerConfig(8090),

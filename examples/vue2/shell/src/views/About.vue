@@ -7,7 +7,7 @@
 <script>
 export default {
   mounted() {
-    System.import('@vue2/module1', true).then((v) => {
+    System.import('@vue2/module1').then((v) => {
       v('#module1')
     })
   }
