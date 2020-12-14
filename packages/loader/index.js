@@ -63,6 +63,10 @@ systemJSPrototype.set = function(name, loc) {
   }
 }
 
+systemJSPrototype.importmap = function() {
+  return this.urlMap
+}
+
 /*
  * getRegister provides the last anonymous System.register call
  */
