@@ -24,7 +24,7 @@ class MfesWebpackPlugin {
     }
 
     try {
-      this.pkg = require(require('path').resolve(process.cwd(), 'package.json'));
+      this.pkg = require(require('path').resolve(process.cwd(), 'package.json'))
       if (!this.options.name && this.pkg) this.options.name = this.pkg.name
     } catch {}
   }
@@ -32,8 +32,8 @@ class MfesWebpackPlugin {
   static devServerConfig(devServer = {}) {
     let port;
     if (typeof devServer === 'number') {
-      port = devServer;
-      devServer = {};
+      port = devServer
+      devServer = {}
     }
     devServer.headers = devServer.headers || {}
     devServer.headers['Access-Control-Allow-Origin'] = '*'
@@ -48,8 +48,9 @@ class MfesWebpackPlugin {
     options.output = options.output || {}
     options.output.filename = this.options.filename
     options.output.libraryTarget = 'system'
+    delete options.output.library
     if (name) {
-      options.output.jsonpFunction = `webpackJsonp_${name}`
+      options.output.jsonpFunction = `webpackJsonp${name}`
       options.output.devtoolNamespace = options.output.devtoolNamespace || name
     }
     options.module = options.module || {}
@@ -59,6 +60,8 @@ class MfesWebpackPlugin {
       delete options.optimization.splitChunks
       delete options.optimization.runtimeChunk
     }
+
+    if (options.devtool && (options.sourceMap || (options.sourceMap === 'object' && options.sourceMap.scripts === true))) delete options.devtool
 
     if (updateExternals) {
       const originExternals = options.externals
@@ -73,7 +76,6 @@ class MfesWebpackPlugin {
 
     if (shared) {
       const code = JSON.stringify(shared)
-
       compiler.hooks.compilation.tap(pluginName, (compilation) => {
         compilation.hooks.optimizeChunkAssets.tap(pluginName, (chunks) => {
           chunks.forEach((chunk) => {
@@ -81,7 +83,7 @@ class MfesWebpackPlugin {
               compilation.updateAsset(filename, (old) => {
                 const source = new ReplaceSource(old)
                 source.insert(old.source().lastIndexOf(')'), `,${code}`)
-                return source;
+                return source
               })
             }
           })
