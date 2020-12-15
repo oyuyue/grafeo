@@ -8,7 +8,7 @@ const pluginName = 'MfesWebpackPlugin'
  * @param {string} [opts.filename]
  * @param {Object} [opts.shared]
  * @param {boolean} [opts.updateExternals]
- * @param {boolean} [opts.deleteSplitChunks]
+ * @param {boolean} [opts.deleteOptimization]
  * @param {boolean} [opts.namePrefixExternal]
  */
 class MfesWebpackPlugin {
@@ -18,7 +18,7 @@ class MfesWebpackPlugin {
       filename: 'remoteEntry.js',
       updateExternals: true,
       namePrefixExternal: true,
-      deleteSplitChunks: true,
+      deleteOptimization: true,
       updateDevServer: true,
       ...opts
     }
@@ -44,7 +44,7 @@ class MfesWebpackPlugin {
 
   apply(compiler) {
     const options = compiler.options
-    const { filename, shared, updateExternals, deleteSplitChunks, name, namePrefixExternal } = this.options
+    const { filename, shared, updateExternals, deleteOptimization, name, namePrefixExternal } = this.options
     options.output = options.output || {}
     options.output.filename = this.options.filename
     options.output.libraryTarget = 'system'
@@ -55,7 +55,10 @@ class MfesWebpackPlugin {
     options.module = options.module || {}
     options.module.rules = options.module.rules || []
     options.module.rules.push({ parser: { system: false } })
-    if (deleteSplitChunks && options.optimization) delete options.optimization.splitChunks
+    if (deleteOptimization && options.optimization) { 
+      delete options.optimization.splitChunks
+      delete options.optimization.runtimeChunk
+    }
 
     if (updateExternals) {
       const originExternals = options.externals
@@ -65,7 +68,7 @@ class MfesWebpackPlugin {
         const scope = name.split('/')[0]
         if (scope) externals.push(new RegExp(`^${scope}\\/.+`))
       }
-      options.externals = externals.filter(x => x)
+      options.externals = externals.filter(Boolean)
     }
 
     if (shared) {
