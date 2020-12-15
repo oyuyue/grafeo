@@ -1,4 +1,4 @@
-const MfesPlugin = require('../../../packages/webpack-plugin/dist')
+const MfesPlugin = require('../../../packages/webpack-plugin/index')
 
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -6,6 +6,10 @@ module.exports = {
   devtool: 'cheap-module-source-map',
   devServer: MfesPlugin.devServerConfig(8092),
   plugins: [
-    new MfesPlugin()
+    new MfesPlugin({
+      shared: {
+        vue: 'https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.runtime.js',
+      }
+    })
   ]
 }

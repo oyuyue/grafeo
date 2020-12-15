@@ -9,7 +9,7 @@ const pluginName = 'MfesWebpackPlugin'
  * @param {Object} [opts.shared]
  * @param {boolean} [opts.updateExternals]
  * @param {boolean} [opts.deleteSplitChunks]
- * @param {boolean} [opts.utils]
+ * @param {boolean} [opts.namePrefixExternal]
  */
 class MfesWebpackPlugin {
 
@@ -17,9 +17,9 @@ class MfesWebpackPlugin {
     this.options = {
       filename: 'remoteEntry.js',
       updateExternals: true,
+      namePrefixExternal: true,
       deleteSplitChunks: true,
       updateDevServer: true,
-      utils: !opts,
       ...opts
     }
 
@@ -44,13 +44,9 @@ class MfesWebpackPlugin {
 
   apply(compiler) {
     const options = compiler.options
-    const { filename, shared, updateExternals, deleteSplitChunks, name, utils } = this.options
+    const { filename, shared, updateExternals, deleteSplitChunks, name, namePrefixExternal } = this.options
     options.output = options.output || {}
     options.output.filename = this.options.filename
-    if (utils) {
-      options.output.libraryTarget = 'umd';
-      return;
-    }
     options.output.libraryTarget = 'system'
     if (name) {
       options.output.jsonpFunction = `webpackJsonp_${name}`
@@ -65,7 +61,7 @@ class MfesWebpackPlugin {
       const originExternals = options.externals
       const externals = Array.isArray(originExternals) ? originExternals : [originExternals]
       if (shared) externals.push(...Object.keys(shared)) 
-      if (name) {
+      if (name && namePrefixExternal) {
         const scope = name.split('/')[0]
         if (scope) externals.push(new RegExp(`^${scope}\\/.+`))
       }
@@ -81,7 +77,7 @@ class MfesWebpackPlugin {
             if (chunk.files[0] === filename && chunk.isOnlyInitial()) {
               compilation.updateAsset(filename, (old) => {
                 const source = new ReplaceSource(old)
-                source.insert(old.size() - 3, `,${code}`)
+                source.insert(old.source().lastIndexOf(')'), `,${code}`)
                 return source;
               })
             }
