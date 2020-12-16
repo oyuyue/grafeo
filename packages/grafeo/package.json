@@ -1,0 +1,14 @@
+{
+  "name": "grafeo",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "author": "wopen <nepow@foxmail.com>",
+  "files": ["dist"],
+  "repository": "git@github.com:woopen/grafeo.git",
+  "homepage": "https://github.com/woopen/grafeo",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  }
+}

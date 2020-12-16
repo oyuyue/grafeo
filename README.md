@@ -1,23 +1,23 @@
-# (WIP) MFES
+# (WIP) Grafeo
 
 简单、功能强大的微前端解决方案。
 
 ## 快速入门
 
 ```
-yarn add -D @mfes/webpack-plugin
+yarn add -D @grafeo/webpack-plugin
 ```
 
-该插件将微前端项目打包成 @mfes/loader 可以加载的模块。
+该插件将微前端项目打包成 @grafeo/loader 可以加载的模块。
 
 ```js
-const MfesPlugin = require('@mfes/webpack-plugin')
+const GrafeoPlugin = require('@grafeo/webpack-plugin')
 
 module.exports = {
-  devServer: MfesPlugin.devServerConfig(8090),
+  devServer: GrafeoPlugin.devServerConfig(8090),
   configureWebpack: {
     plugins: [
-      new MfesPlugin({
+      new GrafeoPlugin({
         name: '@vue2/shell',
         shared: { // 共享依赖，其他项目可以共享这些模块，无需重复下载
           vue: 'https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.runtime.js',
@@ -45,7 +45,7 @@ import('./boot') // 动态加载主代码
 在 HTML 文件中需要加载 loader 代码。
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@mfes/loader@0.0.1/dist/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@grafeo/loader@0.0.1/dist/index.js"></script>
 ```
 
 最后在项目中动态加载其他微前端项目。
@@ -57,15 +57,6 @@ System.import('@vue2/module1', true).then((m) => {
 })
 ```
 
-### 公共工具
-
-项目中可能有很多通用代码，对于这种工具项目，只需要修改以下 webpack 插件代码
-
-```js
-new MfesPlugin() // 什么参数都不传
-new MfesPlugin({ utils: true }) // 或者 utils 设置为 true
-```
-
 ## 例子
 
-详细例子请看 `examples` 文件夹
+详细例子请看 [examples](https://github.com/woopen/grafeo/tree/main/examples) 文件夹

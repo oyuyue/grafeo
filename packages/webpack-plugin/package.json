@@ -1,5 +1,5 @@
 {
-  "name": "@mfes/webpack-plugin",
+  "name": "@grafeo/webpack-plugin",
   "version": "0.0.1",
   "description": "micro frontend webpack plugin",
   "main": "dist/index.js",
@@ -7,8 +7,8 @@
   "keywords": ["mf", "mfe", "micro frontend"],
   "author": "wopen <nepow@foxmail.com>",
   "license": "MIT",
-  "repository": "git@github.com:woopen/mfes.git",
-  "homepage": "https://github.com/woopen/mfes",
+  "repository": "git@github.com:woopen/grafeo.git",
+  "homepage": "https://github.com/woopen/grafeo",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
