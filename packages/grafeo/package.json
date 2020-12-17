@@ -2,7 +2,8 @@
   "name": "grafeo",
   "version": "0.0.0",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "./dist/grafeo.js",
+  "types": "./dist/grafeo.d.ts",
   "author": "wopen <nepow@foxmail.com>",
   "files": ["dist"],
   "repository": "git@github.com:woopen/grafeo.git",
@@ -12,6 +13,6 @@
     "access": "public"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --progress"
+    "build": "cross-env NODE_ENV=production webpack --progress && api-extractor run --local --verbose && rimraf ./dist/src"
   }
 }
