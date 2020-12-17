@@ -10,5 +10,8 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --progress"
   }
 }
