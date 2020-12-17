@@ -1,6 +1,6 @@
 const { ReplaceSource } = require('webpack-sources')
 
-const pluginName = 'MfesWebpackPlugin'
+const pluginName = 'GrafeoWebpackPlugin'
 
 /**
  * @constructor
@@ -11,7 +11,7 @@ const pluginName = 'MfesWebpackPlugin'
  * @param {boolean} [opts.deleteOptimization]
  * @param {boolean} [opts.namePrefixExternal]
  */
-class MfesWebpackPlugin {
+class GrafeoWebpackPlugin {
 
   constructor(opts) {
     this.options = {
@@ -93,4 +93,4 @@ class MfesWebpackPlugin {
   }
 }
 
-module.exports = MfesWebpackPlugin
+module.exports = GrafeoWebpackPlugin
