@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[6],{73:function(o){o.exports=JSON.parse('{"allTagsPath":"/grafeo/blog/tags","slug":"hello","name":"hello","count":2,"permalink":"/grafeo/blog/tags/hello"}')}}]);
