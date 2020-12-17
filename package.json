@@ -12,7 +12,7 @@
     "build:grafeo": "cd ./packages/grafeo && npm run build",
     "lint": "eslint --ext .ts packages/*/src/**",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "deploy:doc": "cd ./website && npm run deploy"
+    "deploy:docs": "cd ./website && npm run deploy"
   },
   "workspaces": [
     "packages/*"
