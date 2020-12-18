@@ -17,5 +17,11 @@
     ],
     "ignorePatterns": ["**/*.js", "node_modules", "dist"],
     "rules": {
+        "@typescript-eslint/no-explicit-any": 0,
+        "no-empty": 0,
+        "quotes": [2, "single", { "avoidEscape": true }],
+        "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
+        "@typescript-eslint/explicit-module-boundary-types": 0,
+        "@typescript-eslint/no-non-null-assertion": 0
     }
 }

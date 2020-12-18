@@ -48,7 +48,7 @@ systemJSPrototype.import = function (id, field) {
     m = m.default
     if (!m) return m;
     return Promise.resolve(m).then(m => {
-      if (loadId === ENTRY && typeof m === 'function') return m(undefined, true)
+      if (loadId === ENTRY && typeof m.default === 'function') return m.default(undefined, true)
       if (typeof field === 'string') return m[field]
       return m.default
     })
