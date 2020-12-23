@@ -2,12 +2,18 @@ export function typeStr(o: any): string {
   return Object.prototype.toString.call(o).slice(8, -1)
 }
 
-export function isObject(o: any): boolean {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function isObject(o: any): o is Object {
   return typeStr(o) === 'Object'
 }
 
 export function isString(o: any): o is string {
   return typeof o === 'string'
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function isFunction(o: any): o is Function {
+  return typeof o === 'function'
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function

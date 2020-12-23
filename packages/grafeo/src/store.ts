@@ -1,6 +1,6 @@
 import { merge } from './utils';
 
-export type StoreListener = (store: Store<any>) => any;
+export type StoreListener = (patch: Partial<any> ,store: Store<any>) => any;
 export type StoreWatcher = (store: Store<any>) => any;
 
 class Store <T extends Record<string, any>>{
@@ -8,7 +8,7 @@ class Store <T extends Record<string, any>>{
   private listeners: StoreListener[] = [];
   private watchers: {[key: string]: StoreWatcher[]} = {};
   private dataQueue: Partial<T>[] = [];
-  private updateDataTimer!: number;
+  private updateDataTimer!: number | undefined;
 
   constructor(state: T) {
     this.state = state || Object.create(null);
@@ -16,10 +16,13 @@ class Store <T extends Record<string, any>>{
 
   private updateState = () => {
     const paths: string[] = [];
+    const patch = this.dataQueue.reduce((a, c) => merge(a, c));
+    merge(this.state, patch, paths)
+    this.dataQueue = [];
 
-    this.dataQueue.forEach(d => {
-      merge(this.state, d, paths)
-    })
+    this.listeners.forEach(fn => fn(patch, this))
+
+    this.updateDataTimer = undefined;
   }
 
   getState(): T {
@@ -28,8 +31,7 @@ class Store <T extends Record<string, any>>{
 
   setData(data: Partial<T>): void {
     this.dataQueue.push(data)
-    clearTimeout(this.updateDataTimer)
-    this.updateDataTimer = setTimeout(this.updateState)
+    if (this.updateDataTimer === undefined) this.updateDataTimer = setTimeout(this.updateState)
   }
 
   subscribe(listener: StoreListener): void {

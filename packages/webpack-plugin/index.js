@@ -1,6 +1,6 @@
 const { ReplaceSource } = require('webpack-sources')
 
-const pluginName = 'GrafeoWebpackPlugin'
+const PLUGIN_NAME = 'GrafeoWebpackPlugin'
 
 /**
  * @constructor
@@ -43,41 +43,41 @@ class GrafeoWebpackPlugin {
   }
 
   apply(compiler) {
-    const options = compiler.options
     const { filename, shared, updateExternals, deleteOptimization, name, namePrefixExternal } = this.options
-    options.output = options.output || {}
-    options.output.filename = this.options.filename
-    options.output.libraryTarget = 'system'
-    delete options.output.library
-    if (name) {
-      options.output.jsonpFunction = `webpackJsonp${name}`
-      options.output.devtoolNamespace = options.output.devtoolNamespace || name
-    }
-    options.module = options.module || {}
-    options.module.rules = options.module.rules || []
-    options.module.rules.push({ parser: { system: false } })
-    if (deleteOptimization && options.optimization) { 
-      delete options.optimization.splitChunks
-      delete options.optimization.runtimeChunk
-    }
 
-    if (options.devtool && (options.sourceMap || (options.sourceMap === 'object' && options.sourceMap.scripts === true))) delete options.devtool
-
-    if (updateExternals) {
-      const originExternals = options.externals
-      const externals = Array.isArray(originExternals) ? originExternals : [originExternals]
-      if (shared) externals.push(...Object.keys(shared)) 
-      if (name && namePrefixExternal) {
-        const scope = name.split('/')[0]
-        if (scope) externals.push(new RegExp(`^${scope}\\/.+`))
+    compiler.hooks.afterEnvironment.tap(PLUGIN_NAME, () => {
+      const options = compiler.options
+      options.output.filename = this.options.filename
+      options.output.libraryTarget = 'system'
+      delete options.output.library
+      if (name) {
+        options.output.jsonpFunction = `webpackJsonp${name}`
+        options.output.devtoolNamespace = options.output.devtoolNamespace || name
       }
-      options.externals = externals.filter(Boolean)
-    }
+      options.module.rules.push({ parser: { system: false } })
+      if (deleteOptimization && options.optimization) { 
+        delete options.optimization.splitChunks
+        delete options.optimization.runtimeChunk
+      }
+
+      if (options.devtool && (options.sourceMap || (options.sourceMap === 'object' && options.sourceMap.scripts === true))) delete options.devtool
+
+      if (updateExternals) {
+        const originExternals = options.externals
+        const externals = Array.isArray(originExternals) ? originExternals : [originExternals]
+        if (shared) externals.push(...Object.keys(shared)) 
+        if (name && namePrefixExternal) {
+          const scope = name.split('/')[0]
+          if (scope) externals.push(new RegExp(`^${scope}\\/.+`))
+        }
+        options.externals = externals.filter(Boolean)
+      }
+    })
 
     if (shared) {
       const code = JSON.stringify(shared)
-      compiler.hooks.compilation.tap(pluginName, (compilation) => {
-        compilation.hooks.optimizeChunkAssets.tap(pluginName, (chunks) => {
+      compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
+        compilation.hooks.optimizeChunkAssets.tap(PLUGIN_NAME, (chunks) => {
           chunks.forEach((chunk) => {
             if (chunk.files[0] === filename && chunk.isOnlyInitial()) {
               compilation.updateAsset(filename, (old) => {
