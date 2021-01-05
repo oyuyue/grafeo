@@ -4,12 +4,3 @@
     <div id="react"></div>
   </div>
 </template>
-<script>
-export default {
-  mounted() {
-    System.import('@app/react').then((v) => {
-      v('#react')
-    })
-  }
-}
-</script>

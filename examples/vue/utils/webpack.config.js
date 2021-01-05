@@ -1,4 +1,4 @@
-const MfesPlugin = require('../../../packages/webpack-plugin/index')
+const MfesPlugin = require('@grafeo/webpack-plugin')
 
 module.exports = {
   mode: process.env.NODE_ENV,

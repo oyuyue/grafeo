@@ -40,7 +40,31 @@ export function merge<T extends Record<string, any>>(
   return dest as T
 }
 
-export function getElement(el: string | HTMLElement): HTMLElement {
+export function getElement(el: string | Element): Element {
   if (isString(el)) return document.querySelector(el) as HTMLElement
   return el
+}
+
+export function centerElement(): HTMLElement {
+  const div = document.createElement('div')
+  div.style.width = '100%'
+  div.style.height = '100%'
+  div.style.display = 'flex'
+  div.style.alignItems = 'center'
+  div.style.justifyContent = 'center'
+  return div
+}
+
+export const requestIdleCallback = (self as any).requestIdleCallback || function (cb: () => any) { return setTimeout(cb, 1); }
+
+let errors: Error[] = [];
+export function storeError(err: Error) {
+  errors.push(err)
+}
+
+export function throwErrors() {
+  if (!errors.length) return;
+  const tmp = errors
+  errors = []
+  throw tmp
 }

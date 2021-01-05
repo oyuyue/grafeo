@@ -1,8 +1,8 @@
 import Vue from 'vue';
 
 export function add(a, b) {
-  console.log('utils1: ', Vue);
+  console.log('utils: ', Vue);
   return a + b
 }
 
-export var name = 'util1'
+export var name = 'util'

@@ -2,14 +2,16 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link to="/module">Module</router-link>
     </div>
     <router-view/>
+    <div id="module"></div>
   </div>
 </template>
 <script>
-import { add } from '@vue2/utils1'
-console.log('vue2 shell: ', add(1, 1))
+import { add } from '@app/utils'
+console.log('shell: ', add(1, 1))
 export default {}
 </script>
 <style>

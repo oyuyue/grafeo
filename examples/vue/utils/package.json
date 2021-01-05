@@ -1,11 +1,12 @@
 {
-  "name": "utils1",
+  "name": "@app/utils",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "serve": "cross-env NODE_ENV=development webpack-dev-server --watch --colors",
-    "build": "cross-env NODE_ENV=production webpack --progress --display-error-details --colors"
+    "build": "cross-env NODE_ENV=production webpack --progress --display-error-details --colors",
+    "@grafeo/webpack-plugin": "file:../../../packages/webpack-plugin/index.js"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

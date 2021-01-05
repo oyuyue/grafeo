@@ -13,32 +13,38 @@ try{
 
 let onceSupported = false;
 
+let prefix = 'grafeo:'
+
 try {
   const options = Object.defineProperty({}, 'once', { get() { onceSupported = true; } });
   self.addEventListener('test', null as any, options);
 } catch(err) {}
 
 export function on(name: string, listener: EventListener, options?: boolean | AddEventListenerOptions): void {
-  self.addEventListener(name, listener, options)
+  self.addEventListener(prefix + name, listener, options)
 }
 
 export function once(name: string, listener: EventListener): void {
   if (onceSupported) {
-    self.addEventListener(name, listener, { once: true })
+    self.addEventListener(prefix + name, listener, { once: true })
   } else {
     const tmp = (event: Event) => {
       off(name, tmp)
       listener(event)
     }
-    self.addEventListener(name, tmp)
+    self.addEventListener(prefix + name, tmp)
   }
 }
 
 export function off(name: string, listener: EventListener): void {
-  self.removeEventListener(name, listener)
+  self.removeEventListener(prefix + name, listener)
 }
 
-export function emit<T = any>(name: string, detail: T): void {
-  const evt = new CustomEvent(name, { detail, bubbles: false, cancelable: false });
+export function emit<T = any>(name: string, detail?: T): void {
+  const evt = new CustomEvent(prefix + name, { detail, bubbles: false, cancelable: false });
   self.dispatchEvent(evt)
+}
+
+export function setEventPrefix(p: string): void {
+  prefix = p;
 }

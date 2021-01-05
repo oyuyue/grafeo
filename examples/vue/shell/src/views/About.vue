@@ -1,15 +1,18 @@
 <template>
   <div class="about">
     <h1>This is an about page</h1>
-    <div id="module1"></div>
+    <div id="module"></div>
   </div>
 </template>
 <script>
+// import { mountApp, destroyApp } from 'grafeo'
+
 export default {
-  mounted() {
-    System.import('@vue2/module1').then((v) => {
-      v('#module1')
-    })
-  }
+  // mounted() {
+  //   mountApp('@app/module', '#module')
+  // },
+  // destroyed() {
+  //   destroyApp('@app/module')
+  // }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <div id="nav">
+  <div class="app">
+    <div class="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
@@ -8,13 +8,13 @@
   </div>
 </template>
 <script>
-import { name } from '@vue2/utils1'
-console.log('vue2 module1: ', name)
+import { name } from '@app/utils'
+console.log('module: ', name)
 export default {
   
 }
 </script>
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

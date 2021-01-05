@@ -40,7 +40,9 @@ systemJSPrototype.import = function (id, field) {
   this.processScripts();
   var loadId;
   return Promise.resolve().then(function () {
-    var load = getOrCreateLoad(loader, loader.resolve(id) || id);
+    var url = loader.resolve(id)
+    if (id && !url) return Promise.reject('cannot resolve id');
+    var load = getOrCreateLoad(loader, url);
     loadId = load.id;
     return load.C || topLevelLoad(loader, load);
   }).then(m => {
