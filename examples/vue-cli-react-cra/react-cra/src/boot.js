@@ -10,20 +10,25 @@ import reportWebVitals from './reportWebVitals';
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
-export default exportApp(function (opts = {}) {
+export default exportApp(function (opts = {}, isRoot) {
   let container;
+
+  const mount = function (el) {
+    if (container) return
+    container = el || opts.el
+    if (typeof container === 'string') container = document.querySelector(container)
+    ReactDOM.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>,
+      container
+    );
+  }
+
+  if (isRoot) return mount('#root')
+
   return {
-    mount(el) {
-      if (container) return
-      container = el || opts.el
-      if (typeof container === 'string') container = document.querySelector(el)
-      ReactDOM.render(
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>,
-        container
-      );
-    },
+    mount,
     destroy() {
       if (container) {
         ReactDOM.unmountComponentAtNode(container)

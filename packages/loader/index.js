@@ -69,6 +69,10 @@ systemJSPrototype.importmap = function() {
   return this.urlMap
 }
 
+systemJSPrototype.isLoaded = function(id) {
+  return !!this.registry[this.resolve(id) || id || ENTRY]
+}
+
 /*
  * getRegister provides the last anonymous System.register call
  */

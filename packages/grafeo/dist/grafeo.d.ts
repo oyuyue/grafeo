@@ -37,6 +37,10 @@ export declare function emit<T = any>(name: string, detail?: T): void;
 
 export declare function enable(): void;
 
+export declare const EVENT_DISABLE = "disable";
+
+export declare const EVENT_ENABLE = "enable";
+
 export declare function exportApp<T>(fn: (options: T, isRoot: boolean) => Partial<App> | App['mount'] | [App['mount'], App['destroy']] | undefined): (options: T, isRoot: boolean) => App | undefined;
 
 export declare function getApp(name: string): AppInfo;

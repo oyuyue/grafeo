@@ -1,5 +1,5 @@
 {
-  "name": "module",
+  "name": "@app/module",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,8 +11,8 @@
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0",
-    "grafeo": "file:../../../../packages/grafeo/dist/grafeo",
-    "@grafeo/webpack-plugin": "file:../../../packages/webpack-plugin/index.js"
+    "grafeo": "file:../../../packages/grafeo/dist/grafeo.js",
+    "@grafeo/webpack-plugin": "file:../../../packages/webpack-plugin/dist/index.js"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
