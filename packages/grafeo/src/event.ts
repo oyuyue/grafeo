@@ -1,3 +1,6 @@
+let onceSupported = false;
+let prefix = 'grafeo:';
+
 try{
   new window.CustomEvent('T');
 }catch(e){
@@ -11,38 +14,47 @@ try{
   self.CustomEvent = CustomEvent as any;
 }
 
-let onceSupported = false;
-
-let prefix = 'grafeo:'
-
 try {
   const options = Object.defineProperty({}, 'once', { get() { onceSupported = true; } });
   self.addEventListener('test', null as any, options);
 } catch(err) {}
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+const listenerMap: Map<EventListener, EventListener> = new Map();
+
+function createListener(listener: EventListener): EventListener {
+  return function ({ detail }: any) { return listener(detail); };
+}
+
 export function on(name: string, listener: EventListener, options?: boolean | AddEventListenerOptions): void {
-  self.addEventListener(prefix + name, listener, options)
+  const l = createListener(listener);
+  listenerMap.set(listener, l);
+  self.addEventListener(prefix + name, l, options);
 }
 
 export function once(name: string, listener: EventListener): void {
+  const l = createListener(listener);
+  listenerMap.set(listener, l);
   if (onceSupported) {
-    self.addEventListener(prefix + name, listener, { once: true })
+    self.addEventListener(prefix + name, l, { once: true });
   } else {
     const tmp = (event: Event) => {
-      off(name, tmp)
-      listener(event)
-    }
-    self.addEventListener(prefix + name, tmp)
+      off(name, tmp);
+      l(event);
+    };
+    self.addEventListener(prefix + name, tmp);
   }
 }
 
 export function off(name: string, listener: EventListener): void {
-  self.removeEventListener(prefix + name, listener)
+  const l = listenerMap.get(listener);
+  self.removeEventListener(prefix + name, l as EventListener);
+  listenerMap.delete(listener);
 }
 
 export function emit<T = any>(name: string, detail?: T): void {
   const evt = new CustomEvent(prefix + name, { detail, bubbles: false, cancelable: false });
-  self.dispatchEvent(evt)
+  self.dispatchEvent(evt);
 }
 
 export function setEventPrefix(p: string): void {

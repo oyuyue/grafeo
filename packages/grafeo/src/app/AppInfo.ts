@@ -1,8 +1,8 @@
 import { RegisterAppOptions } from '.';
 import { noop, isFunction, isString } from '../utils';
 import { App, AppEntry } from './types';
-import loading from './loading'
-import error from './error'
+import loading from './loading';
+import error from './error';
 
 export default class AppInfo {
   private loaded = false;
@@ -23,9 +23,9 @@ export default class AppInfo {
     this.opts = opts;
 
     if (isFunction(opts.load)) {
-      this.load_ = opts.load
+      this.load_ = opts.load;
     } else {
-      this.load_ = () => System.import(opts.load || opts.name)
+      this.load_ = () => System.import(opts.load || opts.name);
     }
 
     if (isString(opts.mountWhen)) {
@@ -37,13 +37,13 @@ export default class AppInfo {
     if (isFunction(opts.loading)) {
       this.uiLoading = opts.loading;
     } else if (opts.loading !== false) {
-      this.uiLoading = loading
+      this.uiLoading = loading;
     }
 
     if (isFunction(opts.error)) {
       this.uiError = opts.error;
     } else if (opts.error !== false) {
-      this.uiError = error
+      this.uiError = error;
     }
   }
 
@@ -55,9 +55,9 @@ export default class AppInfo {
   }
 
   async createApp(opts?: any): Promise<void> {
-    await this.load()
+    await this.load();
     if (this.appEntry) {
-      this.app = this.appEntry(opts || this.opts.props)
+      this.app = this.appEntry(opts || this.opts.props);
     }
   }
 
@@ -65,7 +65,7 @@ export default class AppInfo {
     if (this.app) {
       this.app.update(opts);
     } else {
-      await this.createApp(opts)
+      await this.createApp(opts);
     }
   }
 
@@ -74,17 +74,18 @@ export default class AppInfo {
     if (!this.app) {
       this.mounting = true;
       let unloading;
-      if (this.uiLoading) unloading = this.uiLoading(el as any, this.opts.loadingProps)
+      const mountEl = el || (this.opts.props && this.opts.props.el);
+      if (this.uiLoading) unloading = this.uiLoading(mountEl, this.opts.loadingProps);
       try {
-        await this.createApp()
+        await this.createApp();
       } catch (error) {
         if (this.uiError) {
-          this.destroyUIError = this.uiError(el as any, this.opts.errorProps, this)
+          this.destroyUIError = this.uiError(mountEl, this.opts.errorProps, this);
           return;
         }
-        throw error
+        throw error;
       } finally {
-        this.mounting = false
+        this.mounting = false;
         if (unloading) unloading();
       }
     }
@@ -114,8 +115,8 @@ export default class AppInfo {
 function urlToValidator(path: string): AppInfo['isRouteMatch'] {
   const regex = toDynamicPathValidatorRegex(path);
   return function(_, p) {
-    return regex.test(p)
-  }
+    return regex.test(p);
+  };
 }
 
 function toDynamicPathValidatorRegex(path: string) {

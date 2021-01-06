@@ -29,17 +29,17 @@ class GrafeoWebpackPlugin {
     } catch {}
   }
 
-  static devServerConfig(devServer = {}) {
-    let port;
-    if (typeof devServer === 'number') {
-      port = devServer
-      devServer = {}
+  static devServerConfig(portOrOptions, options) {
+    const devServer = {}
+    if (typeof portOrOptions === 'number') {
+      devServer.port = portOrOptions
+    } else {
+      options = Object.assign({}, portOrOptions, options)
     }
     devServer.headers = devServer.headers || {}
     devServer.headers['Access-Control-Allow-Origin'] = '*'
     devServer.disableHostCheck = true
-    if (port) devServer.port = port
-    return devServer
+    return Object.assign(devServer, options)
   }
 
   apply(compiler) {

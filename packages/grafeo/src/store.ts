@@ -17,10 +17,10 @@ class Store <T extends Record<string, any>>{
   private updateState = () => {
     const paths: string[] = [];
     const patch = this.dataQueue.reduce((a, c) => merge(a, c));
-    merge(this.state, patch, paths)
+    merge(this.state, patch, paths);
     this.dataQueue = [];
 
-    this.listeners.forEach(fn => fn(patch, this))
+    this.listeners.forEach(fn => fn(patch, this));
 
     this.updateDataTimer = undefined;
   }
@@ -30,20 +30,20 @@ class Store <T extends Record<string, any>>{
   }
 
   setData(data: Partial<T>): void {
-    this.dataQueue.push(data)
-    if (this.updateDataTimer === undefined) this.updateDataTimer = setTimeout(this.updateState)
+    this.dataQueue.push(data);
+    if (this.updateDataTimer === undefined) this.updateDataTimer = setTimeout(this.updateState);
   }
 
   subscribe(listener: StoreListener): void {
-    this.listeners.push(listener)
+    this.listeners.push(listener);
   }
 
   watch(path: string, watcher: StoreWatcher): void {
-    (this.watchers[path] || (this.watchers[path] = [])).push(watcher)
+    (this.watchers[path] || (this.watchers[path] = [])).push(watcher);
   }
 
   unsubscribe(listener: StoreListener): void {
-    this.listeners = this.listeners.filter(l => l !== listener)
+    this.listeners = this.listeners.filter(l => l !== listener);
   }
 
   unwatch(): void {
@@ -51,4 +51,4 @@ class Store <T extends Record<string, any>>{
   }
 }
 
-export default Store
+export default Store;

@@ -41,7 +41,7 @@ export declare const EVENT_DISABLE = "disable";
 
 export declare const EVENT_ENABLE = "enable";
 
-export declare function exportApp<T>(fn: (options: T, isRoot: boolean) => Partial<App> | App['mount'] | [App['mount'], App['destroy']] | undefined): (options: T, isRoot: boolean) => App | undefined;
+export declare function exportApp<T = any>(fn: (options: T, isRoot: boolean) => Partial<App> | App['mount'] | [App['mount'], App['destroy']] | void): (options: T, isRoot: boolean) => App | void;
 
 export declare function getApp(name: string): AppInfo;
 

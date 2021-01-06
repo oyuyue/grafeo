@@ -16,71 +16,71 @@ export interface RegisterAppOptions<P = any, L = any, E = any> {
   errorProps?: E;
 }
 
-export function exportApp<T>(
-  fn: (options: T, isRoot: boolean) => Partial<App> | App['mount'] | [App['mount'], App['destroy']] | undefined
+export function exportApp<T = any>(
+  fn: (options: T, isRoot: boolean) => Partial<App> | App['mount'] | [App['mount'], App['destroy']] | void
 ) {
-  return function(options: T, isRoot: boolean): App | undefined {
-    let res = fn(options, isRoot)
+  return function(options: T, isRoot: boolean): App | void {
+    let res = fn(options, isRoot);
     if (isRoot) return;
-    const ret = { mount: noop, update: noop, destroy: noop }
+    const ret = { mount: noop, update: noop, destroy: noop };
     if (isFunction(res)) {
-      res = { mount: res }
+      res = { mount: res };
     } else if (Array.isArray(res)) {
-      res = { mount: res[0], destroy: res[1] }
+      res = { mount: res[0], destroy: res[1] };
     }
-    return Object.assign(ret, res)
-  }
+    return Object.assign(ret, res);
+  };
 }
 
 export function getApps(): AppInfo[] {
-  return Object.keys(appMap).map(x => appMap[x])
+  return Object.keys(appMap).map(x => appMap[x]);
 }
 
 export function getApp(name: string): AppInfo {
-  return appMap[name]
+  return appMap[name];
 }
 
 export function getAppChanges(path: string): {mounts: AppInfo[], destroys:  AppInfo[]} {
-  const ret: ReturnType<typeof getAppChanges> = { mounts: [], destroys:  [] }
+  const ret: ReturnType<typeof getAppChanges> = { mounts: [], destroys:  [] };
   getApps().forEach(app => {
     if (app.isRouteMatch) {
-      const matched = app.isRouteMatch(location, path)
+      const matched = app.isRouteMatch(location, path);
       if (app.isMounted() && !matched) {
-        ret.destroys.push(app)
+        ret.destroys.push(app);
       } else if (!app.isMounted() && matched) {
-        ret.mounts.push(app)
+        ret.mounts.push(app);
       }
     }
-  })
-  return ret
+  });
+  return ret;
 }
 
 export function registerApp(opts: RegisterAppOptions): void {
-  const app = getApp(opts.name)
-  if (app) app.destroy()
-  appMap[opts.name] = new AppInfo(opts)
+  const app = getApp(opts.name);
+  if (app) app.destroy();
+  appMap[opts.name] = new AppInfo(opts);
   if (opts.prefetch) {
-    const app = appMap[opts.name]
-    requestIdleCallback(app.load.bind(app))
+    const app = appMap[opts.name];
+    requestIdleCallback(app.load.bind(app));
   }
 }
 
 export function unregisterApp(name: string): void {
-  destroyApp(name)
-  delete appMap[name]
+  destroyApp(name);
+  delete appMap[name];
 }
 
 export async function mountApp(name: string, el?: string | Element): Promise<void> {
-  const app = getApp(name)
-  if (app) return app.mount(el)
+  const app = getApp(name);
+  if (app) return app.mount(el);
 }
 
 export function updateApp(name: string, opts: any): void {
-  const app = getApp(name)
-  if (app) app.update(opts)
+  const app = getApp(name);
+  if (app) app.update(opts);
 }
 
 export function destroyApp(name: string): void {
-  const app = getApp(name)
-  if (app) return app.destroy()
+  const app = getApp(name);
+  if (app) return app.destroy();
 }

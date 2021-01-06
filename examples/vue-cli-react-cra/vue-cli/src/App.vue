@@ -31,4 +31,8 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+#react > div {
+  border: 5px solid orangered;
+}
 </style>
