@@ -1,5 +1,3 @@
-var global = typeof self !== 'undefined' ? self : global
-var hasDocument = typeof document !== 'undefined'
 var ENTRY = '__ENTRY'
 
 function SystemJS () {
@@ -302,12 +300,10 @@ function postOrderExec (loader, load, seen) {
  * Script instantiation loading
  */
 var lastWindowErrorUrl, lastWindowError;
-if (hasDocument) {
-  window.addEventListener('error', function (evt) {
-    lastWindowErrorUrl = evt.filename;
-    lastWindowError = evt.error;
-  });
-}
+window.addEventListener('error', function (evt) {
+  lastWindowErrorUrl = evt.filename;
+  lastWindowError = evt.error;
+});
 
 systemJSPrototype.instantiate = function (url) {
   var loader = this;
@@ -334,8 +330,6 @@ systemJSPrototype.instantiate = function (url) {
     document.head.appendChild(script);
   });
 };
-
-
 
 // AMD
 
@@ -445,7 +439,7 @@ systemJSPrototype.getRegister = function () {
   return createAMDRegister(_amdDefineDeps, amdDefineExec);
 };
 var amdDefineDeps, amdDefineExec;
-global.define = function (name, deps, execute) {
+self.define = function (name, deps, execute) {
   var depsAndExec;
   // define('', [], function () {})
   if (typeof name === 'string') {
@@ -470,7 +464,7 @@ global.define = function (name, deps, execute) {
   amdDefineDeps = depsAndExec[0];
   amdDefineExec = depsAndExec[1];
 };
-global.define.amd = {};
+self.define.amd = {};
 
 function getDepsAndExec(arg1, arg2) {
   // define([], function () {})
@@ -503,4 +497,4 @@ function addToRegisterRegistry(name, define) {
   tmpRegister = null;
 }
 
-global.System = new SystemJS()
+self.System = new SystemJS()

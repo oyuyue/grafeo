@@ -1,12 +1,3 @@
-export function typeStr(o: any): string {
-  return Object.prototype.toString.call(o).slice(8, -1);
-}
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isObject(o: any): o is Object {
-  return typeStr(o) === 'Object';
-}
-
 export function isString(o: any): o is string {
   return typeof o === 'string';
 }
@@ -19,29 +10,8 @@ export function isFunction(o: any): o is Function {
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop(): void {}
 
-export function merge<T extends Record<string, any>>(
-  dest: Record<string, any>, 
-  source: Record<string, any>,
-  paths?: string[],
-  parentPath?: string
-): T {
-  dest = dest || {};
-  let item;
-  Object.keys(source).forEach(k => {
-    item = source[k];
-    const p = parentPath ? parentPath + '.' + k : k;
-    if (isObject(item)) {
-      dest[k] = merge(dest[k], item, paths, p);
-    } else {
-      if (paths) paths.push(p);
-      dest[k] = source[k];
-    }
-  });
-  return dest as T;
-}
-
-export function getElement(el: string | Element): Element {
-  if (isString(el)) return document.querySelector(el) as HTMLElement;
+export function getElement(el: string | Element): Element | null {
+  if (isString(el)) return document.querySelector(el);
   return el;
 }
 
@@ -58,11 +28,12 @@ export function centerElement(): HTMLElement {
 export const requestIdleCallback = (self as any).requestIdleCallback || function (cb: () => any) { return setTimeout(cb, 1); };
 
 let errors: Error[] = [];
-export function storeError(err: Error) {
+
+export function storeError(err: Error): void {
   errors.push(err);
 }
 
-export function throwErrors() {
+export function throwErrors(): void | never {
   if (!errors.length) return;
   const tmp = errors;
   errors = [];
